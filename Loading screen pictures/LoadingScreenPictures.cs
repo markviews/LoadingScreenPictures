@@ -56,7 +56,6 @@ namespace Loading_screen_pictures {
             }
             noPics = false;
 
-            screen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainScreen");
             GameObject parentScreen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN");
             screenRender = screen.GetComponent<Renderer>();
             lastTexture = screenRender.material.mainTexture;
