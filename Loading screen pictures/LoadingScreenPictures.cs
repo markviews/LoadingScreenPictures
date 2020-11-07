@@ -1,7 +1,6 @@
 ﻿using Il2CppSystem;
 using MelonLoader;
 using System.IO;
-using System.Security.Permissions;
 using UnityEngine;
 
 namespace Loading_screen_pictures {
@@ -13,6 +12,15 @@ namespace Loading_screen_pictures {
         Renderer pic;
         int delay = 1;//delay for setup (set to 0 after setup)
         bool noPics = false;
+        static String folder_dir;
+
+        public override void OnApplicationStart() {
+            MelonPrefs.RegisterCategory("LoadingScreenPictures", "Loading Screen Pictures");
+            String default_str = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
+            MelonPrefs.RegisterString("LoadingScreenPictures", "directory", default_str, "Folder to get pictures from");
+
+            folder_dir = MelonPrefs.GetString("LoadingScreenPictures", "directory");
+        }
 
         public override void OnUpdate() {
 
@@ -85,11 +93,20 @@ namespace Loading_screen_pictures {
             MelonLogger.Log("Setup Game Objects.");
         }
 
-        public static String randImage() {
-            FileInfo[] Files = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat").GetFiles("*.png");
-            if (Files.Length == 0) return null;
-            int rand = new Il2CppSystem.Random().Next(0, Files.Length);
-            return Files[rand].ToString();
+        public static String randImage()
+        {
+            FileInfo[] Files = new DirectoryInfo(folder_dir).GetFiles("*.png");
+            if (Files.Length == 0)
+            {
+                string[] dirs = Directory.GetDirectories(folder_dir, "*", SearchOption.TopDirectoryOnly);
+                if (dirs.Length == 0) return null;
+                int randDir = new Il2CppSystem.Random().Next(0, dirs.Length);
+                FileInfo[] dirFiles = new DirectoryInfo(dirs[randDir]).GetFiles("*.png");
+                int randPic2 = new Il2CppSystem.Random().Next(0, Files.Length);
+                return dirFiles[randPic2].ToString();
+            }
+            int randPic = new Il2CppSystem.Random().Next(0, Files.Length);
+            return Files[randPic].ToString();
         }
 
 
