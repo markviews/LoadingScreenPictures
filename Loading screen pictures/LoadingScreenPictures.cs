@@ -30,7 +30,8 @@ namespace Loading_screen_pictures {
                     if (screen != null) {
                         setup();
                         delay = 0;
-                    } else delay = 1;//not ready yet, start delay over
+                    }
+                    else delay = 1;//not ready yet, start delay over
                 }
                 return;
             }
@@ -51,13 +52,11 @@ namespace Loading_screen_pictures {
             Texture2D texture = new Texture2D(2, 2);
             ImageConversion.LoadImage(texture, File.ReadAllBytes(randImage()));
             pic.material.mainTexture = texture;
-            if (pic.material.mainTexture.height > pic.material.mainTexture.width)
-            {
+            if (pic.material.mainTexture.height > pic.material.mainTexture.width) {
                 cube.transform.localScale = new Vector3(0.099f, 1, 0.175f);
                 GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(10.80f, 19.20f, 1);
             }
-            else
-            {
+            else {
                 cube.transform.localScale = new Vector3(0.175f, 1, 0.099f);
                 GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(19.20f, 10.80f, 1);
             }
@@ -69,7 +68,7 @@ namespace Loading_screen_pictures {
             String imageLink = randImage();
             if (imageLink == null) {
                 noPics = true;
-                MelonLogger.Log("No screenshots found in: " + Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat");
+                MelonLogger.Log("No screenshots found in: " + folder_dir);
                 return;
             }
             noPics = false;
@@ -84,6 +83,7 @@ namespace Loading_screen_pictures {
             cube.transform.rotation = screen.transform.rotation;
             cube.transform.localPosition = new Vector3(0, 0, -0.19f);
             cube.GetComponent<Collider>().enabled = false;
+            cube.layer = LayerMask.NameToLayer("UiMenu");
             Texture2D texture = new Texture2D(2, 2);
             ImageConversion.LoadImage(texture, File.ReadAllBytes(imageLink));
             pic = cube.GetComponent<Renderer>();
@@ -93,17 +93,13 @@ namespace Loading_screen_pictures {
             screenRender.enabled = false;
 
             //resize frame
-            if (pic.material.mainTexture.height > pic.material.mainTexture.width)
-            {
+            if (pic.material.mainTexture.height > pic.material.mainTexture.width) {
                 cube.transform.localScale = new Vector3(0.099f, 1, 0.175f);
                 GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(10.80f, 19.20f, 1);
-            }
-            else
-            {
+            } else {
                 cube.transform.localScale = new Vector3(0.175f, 1, 0.099f);
                 GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(19.20f, 10.80f, 1);
             }
-
 
             //hide icon and title
             GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/ICON").active = false;
@@ -112,11 +108,9 @@ namespace Loading_screen_pictures {
             MelonLogger.Log("Setup Game Objects.");
         }
 
-        public static String randImage()
-        {
+        public static String randImage() {
             FileInfo[] Files = new DirectoryInfo(folder_dir).GetFiles("*.png");
-            if (Files.Length == 0)
-            {
+            if (Files.Length == 0) {
                 string[] dirs = Directory.GetDirectories(folder_dir, "*", SearchOption.TopDirectoryOnly);
                 if (dirs.Length == 0) return null;
                 int randDir = new Il2CppSystem.Random().Next(0, dirs.Length);
