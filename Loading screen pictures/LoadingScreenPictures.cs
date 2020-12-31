@@ -8,44 +8,34 @@ namespace Loading_screen_pictures {
 
         GameObject screen, cube;
         Texture lastTexture;
-        Renderer screenRender;
-        Renderer pic;
-        int delay = 1;//delay for setup (set to 0 after setup)
-        bool noPics = false;
+        Renderer screenRender, pic;
         static String folder_dir;
+        bool initUI = false;
 
         public override void OnApplicationStart() {
             MelonPrefs.RegisterCategory("LoadingScreenPictures", "Loading Screen Pictures");
-            String default_str = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
-            MelonPrefs.RegisterString("LoadingScreenPictures", "directory", default_str, "Folder to get pictures from");
-
+            String default_dir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
+            MelonPrefs.RegisterString("LoadingScreenPictures", "directory", default_dir, "Folder to get pictures from");
             folder_dir = MelonPrefs.GetString("LoadingScreenPictures", "directory");
         }
 
+        public override void VRChat_OnUiManagerInit() {
+            screen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainScreen");
+            setup();
+            initUI = true;
+        }
+
         public override void OnUpdate() {
-
-            if (delay != 0) {
-                if (delay++ == 100) {
-                    screen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainScreen");
-                    if (screen != null) {
-                        setup();
-                        delay = 0;
-                    }
-                    else delay = 1;//not ready yet, start delay over
+            if (lastTexture != null)
+                if (lastTexture != screenRender.material.mainTexture) {
+                   lastTexture = screenRender.material.mainTexture;
+                  changePic();
                 }
-                return;
-            }
-
-            if (noPics) return;
-
-            if (lastTexture != screenRender.material.mainTexture) {
-                lastTexture = screenRender.material.mainTexture;
-                changePic();
-            }
         }
 
         public override void OnLevelWasInitialized(int level) {
-            if (noPics) setup();
+            if (initUI && screen == null) 
+                setup();
         }
 
         public void changePic() {
@@ -55,23 +45,19 @@ namespace Loading_screen_pictures {
             if (pic.material.mainTexture.height > pic.material.mainTexture.width) {
                 cube.transform.localScale = new Vector3(0.099f, 1, 0.175f);
                 GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(10.80f, 19.20f, 1);
-            }
-            else {
+            } else {
                 cube.transform.localScale = new Vector3(0.175f, 1, 0.099f);
                 GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(19.20f, 10.80f, 1);
             }
         }
 
         public void setup() {
-
             //check if screenshots folder is empty
             String imageLink = randImage();
             if (imageLink == null) {
-                noPics = true;
                 MelonLogger.Log("No screenshots found in: " + folder_dir);
                 return;
             }
-            noPics = false;
 
             GameObject parentScreen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN");
             screenRender = screen.GetComponent<Renderer>();
