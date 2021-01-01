@@ -34,7 +34,7 @@ namespace Loading_screen_pictures {
         }
 
         public override void OnLevelWasInitialized(int level) {
-            if (initUI && screen == null) 
+            if (initUI && lastTexture == null) 
                 setup();
         }
 
