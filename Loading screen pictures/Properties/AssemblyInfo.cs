@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.2", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.3", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: AssemblyTitle("Loading screen pictures")]
 [assembly: AssemblyDescription("")]
