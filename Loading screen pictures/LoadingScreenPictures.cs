@@ -95,17 +95,10 @@ namespace Loading_screen_pictures {
         }
 
         public static String randImage() {
-            FileInfo[] Files = new DirectoryInfo(folder_dir).GetFiles("*.png");
-            if (Files.Length == 0) {
-                string[] dirs = Directory.GetDirectories(folder_dir, "*", SearchOption.TopDirectoryOnly);
-                if (dirs.Length == 0) return null;
-                int randDir = new Il2CppSystem.Random().Next(0, dirs.Length);
-                FileInfo[] dirFiles = new DirectoryInfo(dirs[randDir]).GetFiles("*.png");
-                int randPic2 = new Il2CppSystem.Random().Next(0, Files.Length);
-                return dirFiles[randPic2].ToString();
-            }
-            int randPic = new Il2CppSystem.Random().Next(0, Files.Length);
-            return Files[randPic].ToString();
+            string[] pics = Directory.GetFiles(folder_dir, "*.png", SearchOption.AllDirectories);
+            if (pics.Length == 0) return null;
+            int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
+            return pics[randPic].ToString();
         }
 
 
