@@ -2,15 +2,19 @@
 using MelonLoader;
 using System.IO;
 using UnityEngine;
+using Loading_screen_pictures;
+
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.3", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonGame("VRChat", "VRChat")]
 
 namespace Loading_screen_pictures {
-    public class LoadingScreenPictures : MelonMod {
+    internal class LoadingScreenPictures : MelonMod {
 
-        GameObject screen, cube;
-        Texture lastTexture;
-        Renderer screenRender, pic;
-        static String folder_dir;
-        bool initUI = false;
+        private GameObject cube;
+        private Texture lastTexture;
+        private Renderer screenRender, pic;
+        private String folder_dir;
+        private bool initUI = false;
 
         public override void OnApplicationStart() {
             MelonPrefs.RegisterCategory("LoadingScreenPictures", "Loading Screen Pictures");
@@ -20,7 +24,6 @@ namespace Loading_screen_pictures {
         }
 
         public override void VRChat_OnUiManagerInit() {
-            screen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainScreen");
             setup();
             initUI = true;
         }
@@ -38,7 +41,7 @@ namespace Loading_screen_pictures {
                 setup();
         }
 
-        public void changePic() {
+        private void changePic() {
             Texture2D texture = new Texture2D(2, 2);
             ImageConversion.LoadImage(texture, File.ReadAllBytes(randImage()));
             pic.material.mainTexture = texture;
@@ -51,7 +54,8 @@ namespace Loading_screen_pictures {
             }
         }
 
-        public void setup() {
+        private void setup() {
+            GameObject screen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainScreen");
             //check if screenshots folder is empty
             String imageLink = randImage();
             if (imageLink == null) {
@@ -94,7 +98,7 @@ namespace Loading_screen_pictures {
             MelonLogger.Log("Setup Game Objects.");
         }
 
-        public static String randImage() {
+        private String randImage() {
             string[] pics = Directory.GetFiles(folder_dir, "*.png", SearchOption.AllDirectories);
             if (pics.Length == 0) return null;
             int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
