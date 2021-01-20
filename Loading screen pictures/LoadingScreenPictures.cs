@@ -3,8 +3,10 @@ using MelonLoader;
 using System.IO;
 using UnityEngine;
 using Loading_screen_pictures;
+using System.Linq;
+using System.Collections.Generic;
 
-[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.3", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.4", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace Loading_screen_pictures {
@@ -99,7 +101,7 @@ namespace Loading_screen_pictures {
         }
 
         private String randImage() {
-            string[] pics = Directory.GetFiles(folder_dir, "*.png", SearchOption.AllDirectories);
+            string[] pics = Directory.GetFiles(folder_dir, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".png") || s.EndsWith(".jpeg")).ToArray();
             if (pics.Length == 0) return null;
             int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
             return pics[randPic].ToString();
