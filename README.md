@@ -11,6 +11,7 @@ Replaces the tips in the loading screen with pictures from your VRChat screensho
 ### Notes
 * You can change the directory images are searched for in `VRChat/UserData/modprefs.ini`
 * Compatible with PhotoOrganization mod (searches subfolders)
+* Reads `.png` and `.jpeg` files
 
 ![Example picture](https://i.ibb.co/qgQTTRL/2020-11-03-22-55-24.png)
 
