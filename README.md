@@ -16,4 +16,4 @@ Replaces the tips in the loading screen with pictures from your VRChat screensho
 ![Example picture](https://i.ibb.co/qgQTTRL/2020-11-03-22-55-24.png)
 
 ### Credits
-HeyImRuu for adding horizontal photo support
+HeyImRuu for adding vertical photo support
