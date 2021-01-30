@@ -3,7 +3,7 @@ Replaces the tips in the loading screen with pictures from your VRChat screensho
 <br>
 
 ### How to use
-1. Download and install [MellonLoader](https://melonwiki.xyz/#/README)
+1. Download and install [MelonLoader](https://melonwiki.xyz/#/README)
 2. Download [Loading Screen Pictures.dll](https://github.com/markviews/LoadingScreenPictures/releases)
 3. Drag `Loading Screen Pictures.dll` into `VRChat/Mods`
 4. Screenshots you take in game will show up in your loading screen!
