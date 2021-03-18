@@ -5,7 +5,6 @@ using UnityEngine;
 using Loading_screen_pictures;
 using System.Linq;
 using System.Collections.Generic;
-using Console = System.Console;
 
 [assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.4", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
