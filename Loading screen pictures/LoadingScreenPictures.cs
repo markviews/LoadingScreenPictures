@@ -15,14 +15,14 @@ namespace Loading_screen_pictures {
         private GameObject cube;
         private Texture lastTexture;
         private Renderer screenRender, pic;
-        private String folder_dir;
+        private string folder_dir;
+        private readonly string default_dir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
         private bool initUI = false;
 
         public override void OnApplicationStart() {
-            MelonPrefs.RegisterCategory("LoadingScreenPictures", "Loading Screen Pictures");
-            String default_dir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
-            MelonPrefs.RegisterString("LoadingScreenPictures", "directory", default_dir, "Folder to get pictures from");
-            folder_dir = MelonPrefs.GetString("LoadingScreenPictures", "directory");
+            MelonPreferences.CreateCategory("LoadingScreenPictures", "Loading Screen Pictures");
+            MelonPreferences.CreateEntry("LoadingScreenPictures", "directory", default_dir, "Folder to get pictures from");
+            folder_dir = MelonPreferences.GetEntryValue<string>("LoadingScreenPictures", "directory");
         }
 
         public override void VRChat_OnUiManagerInit() {
@@ -30,17 +30,26 @@ namespace Loading_screen_pictures {
             initUI = true;
         }
 
-        public override void OnUpdate() {
-            if (lastTexture != null)
-                if (lastTexture != screenRender.material.mainTexture) {
-                   lastTexture = screenRender.material.mainTexture;
-                  changePic();
-                }
+        public override void OnUpdate()
+        {
+            if (lastTexture == null) return;
+            if (lastTexture == screenRender.material.mainTexture) return;
+            lastTexture = screenRender.material.mainTexture;
+            changePic();
         }
 
-        public override void OnLevelWasInitialized(int level) {
-            if (initUI && lastTexture == null) 
-                setup();
+        public override void OnSceneWasInitialized(int buildIndex, string sceneName)
+        {
+            switch (buildIndex)
+            {
+                case 1:
+                case 2:
+                    break;
+                default: //Causes this to run only once instead of multiple times.
+                    if (initUI && lastTexture == null) 
+                        setup();
+                    break;
+            }
         }
 
         private void changePic() {
@@ -97,14 +106,42 @@ namespace Loading_screen_pictures {
             GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/ICON").active = false;
             GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/TITLE").active = false;
 
-            MelonLogger.Log("Setup Game Objects.");
+            MelonLogger.Msg("Setup Game Objects.");
         }
 
         private String randImage() {
+            if (folder_dir == null) // One way to set up an image.
+            {
+                folder_dir = default_dir;
+            }
             string[] pics = Directory.GetFiles(folder_dir, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".png") || s.EndsWith(".jpeg")).ToArray();
             if (pics.Length == 0) return null;
             int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
             return pics[randPic].ToString();
+            /* Option 2 To have it set up, basically if anything fails in the try, the catch defaults to the default_dir
+             try
+            {
+                try
+                {
+                    string[] pics = Directory.GetFiles(folder_dir, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".png") || s.EndsWith(".jpeg")).ToArray();
+                    if (pics.Length == 0) return null;
+                    int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
+                    return pics[randPic].ToString();
+                }
+                catch (System.Exception)
+                {
+                    string[] pics = Directory.GetFiles(default_dir, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".png") || s.EndsWith(".jpeg")).ToArray();
+                    if (pics.Length == 0) return null;
+                    int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
+                    return pics[randPic].ToString();
+                }
+            }
+            catch (System.Exception e)
+            {
+                MelonLogger.Error(e);
+            }
+
+            return "";*/
         }
 
 
