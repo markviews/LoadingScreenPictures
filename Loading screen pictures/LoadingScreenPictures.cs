@@ -110,15 +110,6 @@ namespace Loading_screen_pictures {
         }
 
         private String randImage() {
-            if (folder_dir == null) // One way to set up an image.
-            {
-                folder_dir = default_dir;
-            }
-            string[] pics = Directory.GetFiles(folder_dir, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".png") || s.EndsWith(".jpeg")).ToArray();
-            if (pics.Length == 0) return null;
-            int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
-            return pics[randPic].ToString();
-            /* Option 2 To have it set up, basically if anything fails in the try, the catch defaults to the default_dir
              try
             {
                 try
@@ -128,7 +119,7 @@ namespace Loading_screen_pictures {
                     int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
                     return pics[randPic].ToString();
                 }
-                catch (System.Exception)
+                catch (System.Exception) //Using the catch as a fallback for the default_dir
                 {
                     string[] pics = Directory.GetFiles(default_dir, "*.*", SearchOption.AllDirectories).Where(s => s.EndsWith(".png") || s.EndsWith(".jpeg")).ToArray();
                     if (pics.Length == 0) return null;
@@ -141,7 +132,7 @@ namespace Loading_screen_pictures {
                 MelonLogger.Error(e);
             }
 
-            return "";*/
+            return ""; //This would only ever be returned if the fallback fails.
         }
 
 
