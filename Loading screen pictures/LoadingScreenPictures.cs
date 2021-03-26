@@ -5,7 +5,7 @@ using UnityEngine;
 using Loading_screen_pictures;
 using System.Linq;
 
-[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.5", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.6", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace Loading_screen_pictures {
@@ -16,12 +16,16 @@ namespace Loading_screen_pictures {
         private Renderer screenRender, pic;
         private string folder_dir;
         private bool initUI = false;
+        private bool enabled = true;
+        private Vector3 originalSize;
 
         public override void OnApplicationStart() {
             string default_dir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
             MelonPreferences.CreateCategory("LoadingScreenPictures", "Loading Screen Pictures");
             MelonPreferences.CreateEntry("LoadingScreenPictures", "directory", default_dir, "Folder to get pictures from");
+            MelonPreferences.CreateEntry("LoadingScreenPictures", "enabled", true, "Enable mod?");
             folder_dir = MelonPreferences.GetEntryValue<string>("LoadingScreenPictures", "directory");
+            enabled = MelonPreferences.GetEntryValue<bool>("LoadingScreenPictures", "enabled");
 
             if (default_dir != folder_dir && !Directory.Exists(folder_dir)) {
                 folder_dir = default_dir;
@@ -34,7 +38,14 @@ namespace Loading_screen_pictures {
             initUI = true;
         }
 
+        public override void OnPreferencesSaved() {
+            enabled = MelonPreferences.GetEntryValue<bool>("LoadingScreenPictures", "enabled");
+            if (enabled) setup();
+            else disable();
+        }
+
         public override void OnUpdate() {
+            if (!enabled) return;
             if (lastTexture == null) return;
             if (lastTexture == screenRender.material.mainTexture) return;
             lastTexture = screenRender.material.mainTexture;
@@ -66,7 +77,18 @@ namespace Loading_screen_pictures {
             }
         }
 
+        private void disable() {
+            GameObject mainFrame = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame");
+            if (mainFrame) mainFrame.transform.localScale = originalSize;
+            if (screenRender) screenRender.enabled = true;
+            if (cube) GameObject.Destroy(cube);
+            lastTexture = null;
+        }
+
         private void setup() {
+            if (!enabled || lastTexture != null) return;
+            originalSize = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale;
+
             GameObject screen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainScreen");
             //check if screenshots folder is empty
             String imageLink = randImage();
