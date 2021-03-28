@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using UnhollowerRuntimeLib.XrefScans;
 
-[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.6", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.7", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace Loading_screen_pictures {
