@@ -160,6 +160,7 @@ namespace Loading_screen_pictures {
             return pics[randPic].ToString();
         }
 
+        //thanks to Psychloor for this
         public delegate bool StreamerModeDelegate();
 
         private static StreamerModeDelegate ourStreamerModeDelegate;
