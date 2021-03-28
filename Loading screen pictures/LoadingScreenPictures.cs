@@ -4,6 +4,8 @@ using System.IO;
 using UnityEngine;
 using Loading_screen_pictures;
 using System.Linq;
+using System.Reflection;
+using UnhollowerRuntimeLib.XrefScans;
 
 [assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.6", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
@@ -23,7 +25,7 @@ namespace Loading_screen_pictures {
             string default_dir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
             MelonPreferences.CreateCategory("LoadingScreenPictures", "Loading Screen Pictures");
             MelonPreferences.CreateEntry("LoadingScreenPictures", "directory", default_dir, "Folder to get pictures from");
-            MelonPreferences.CreateEntry("LoadingScreenPictures", "enabled", true, "Enable mod?");
+            MelonPreferences.CreateEntry("LoadingScreenPictures", "enabled", true, "Enable");
             folder_dir = MelonPreferences.GetEntryValue<string>("LoadingScreenPictures", "directory");
             enabled = MelonPreferences.GetEntryValue<bool>("LoadingScreenPictures", "enabled");
 
@@ -44,8 +46,25 @@ namespace Loading_screen_pictures {
             else disable();
         }
 
+        private float wait = 0.0f;
+        private bool hidden = false;
+
         public override void OnUpdate() {
             if (!enabled) return;
+
+            if (Time.time > wait) {
+                wait += 5f;
+                if (GetStreamerMode()) {
+                    if (hidden) return;
+                    hidden = true;
+                        disable();
+                } else {
+                    if (!hidden) return;
+                    hidden = false;
+                    setup();
+                }
+            }
+
             if (lastTexture == null) return;
             if (lastTexture == screenRender.material.mainTexture) return;
             lastTexture = screenRender.material.mainTexture;
@@ -78,6 +97,7 @@ namespace Loading_screen_pictures {
         }
 
         private void disable() {
+            MelonLogger.Msg("Disabled");
             GameObject mainFrame = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame");
             if (mainFrame) mainFrame.transform.localScale = originalSize;
             if (screenRender) screenRender.enabled = true;
@@ -138,6 +158,27 @@ namespace Loading_screen_pictures {
             if (pics.Length == 0) return null;
             int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
             return pics[randPic].ToString();
+        }
+
+        public delegate bool StreamerModeDelegate();
+
+        private static StreamerModeDelegate ourStreamerModeDelegate;
+
+        public static StreamerModeDelegate GetStreamerMode {
+            get {
+                if (ourStreamerModeDelegate != null) return ourStreamerModeDelegate;
+
+                foreach (PropertyInfo property in typeof(VRCInputManager).GetProperties(BindingFlags.Public | BindingFlags.Static)) {
+                    if (property.PropertyType != typeof(bool)) continue;
+                    if (XrefScanner.XrefScan(property.GetSetMethod()).Any(
+                        xref => xref.Type == XrefType.Global && xref.ReadAsObject()?.ToString().Equals("VRC_STREAMER_MODE_ENABLED") == true)) {
+                        ourStreamerModeDelegate = (StreamerModeDelegate)System.Delegate.CreateDelegate(typeof(StreamerModeDelegate), property.GetGetMethod());
+                        return ourStreamerModeDelegate;
+                    }
+                }
+
+                return null;
+            }
         }
 
 
