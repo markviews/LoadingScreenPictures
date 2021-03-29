@@ -1,5 +1,7 @@
 # Loading Screen Pictures
-Replaces the tips in the loading screen with pictures from your VRChat screenshots folder!
+Replaces the tips in the loading screen with pictures from your VRChat screenshots folder!<br>
+<br>
+Upvote the [official feature request](https://feedback.vrchat.com/feature-requests/p/screenshots-in-the-loading-screen) to help show VRChat we want this added to the game.
 <br>
 
 ### How to use
