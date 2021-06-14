@@ -6,8 +6,9 @@ using Loading_screen_pictures;
 using System.Linq;
 using System.Reflection;
 using UnhollowerRuntimeLib.XrefScans;
+using System.Collections;
 
-[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.7", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.8", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace Loading_screen_pictures {
@@ -22,6 +23,7 @@ namespace Loading_screen_pictures {
         private Vector3 originalSize;
 
         public override void OnApplicationStart() {
+            MelonCoroutines.Start(UiManagerInitializer());
             string default_dir = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + @"\VRChat";
             MelonPreferences.CreateCategory("LoadingScreenPictures", "Loading Screen Pictures");
             MelonPreferences.CreateEntry("LoadingScreenPictures", "directory", default_dir, "Folder to get pictures from");
@@ -35,7 +37,8 @@ namespace Loading_screen_pictures {
             }
         }
 
-        public override void VRChat_OnUiManagerInit() {
+        public IEnumerator UiManagerInitializer() {
+            while (VRCUiManager.prop_VRCUiManager_0 == null) yield return null;
             setup();
             initUI = true;
         }
