@@ -1,5 +1,7 @@
 # Loading Screen Pictures
-Replaces the tips in the loading screen with pictures from your VRChat screenshots folder!
+Replaces the tips in the loading screen with pictures from your VRChat screenshots folder!<br>
+<br>
+Upvote the [official feature request](https://feedback.vrchat.com/feature-requests/p/screenshots-in-the-loading-screen) to help show VRChat we want this added to the game.
 <br>
 
 ### How to use
@@ -16,4 +18,6 @@ Replaces the tips in the loading screen with pictures from your VRChat screensho
 ![Example picture](https://i.ibb.co/qgQTTRL/2020-11-03-22-55-24.png)
 
 ### Credits
-HeyImRuu for adding vertical photo support
+* HeyImRuu for adding vertical photo support
+* Psychloor for Streamer mode code
+* Arion-Kun for helping with error catching and optimisation
