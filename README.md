@@ -1,13 +1,11 @@
 # Loading Screen Pictures
 Replaces the tips in the loading screen with pictures from your VRChat screenshots folder!<br>
 <br>
-Upvote the [official feature request](https://feedback.vrchat.com/feature-requests/p/screenshots-in-the-loading-screen) to help show VRChat we want this added to the game.
-<br>
 
 ### How to use
 1. Download and install [MelonLoader](https://melonwiki.xyz/#/README)
-2. Download [Loading Screen Pictures.dll](https://github.com/markviews/LoadingScreenPictures/releases)
-3. Drag `Loading Screen Pictures.dll` into `VRChat/Mods`
+2. Download [LoadingScreenPictures.dll](https://github.com/markviews/LoadingScreenPictures/releases)
+3. Drag `LoadingScreenPictures.dll` into `VRChat/Mods`
 4. Screenshots you take in game will show up in your loading screen!
 
 ### Notes
@@ -19,5 +17,4 @@ Upvote the [official feature request](https://feedback.vrchat.com/feature-reques
 
 ### Credits
 * HeyImRuu for adding vertical photo support
-* Psychloor for Streamer mode code
-* Arion-Kun for helping with error catching and optimisation
+* Arion-Kun for helping with error catching and optimization

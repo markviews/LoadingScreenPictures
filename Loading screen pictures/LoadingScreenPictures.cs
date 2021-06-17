@@ -14,6 +14,7 @@ using System.Collections;
 namespace Loading_screen_pictures {
     internal class LoadingScreenPictures : MelonMod {
 
+        private GameObject mainFrame;
         private GameObject cube;
         private Texture lastTexture;
         private Renderer screenRender, pic;
@@ -57,12 +58,7 @@ namespace Loading_screen_pictures {
 
             if (Time.time > wait) {
                 wait += 5f;
-                if (GetStreamerMode()) {
-                    if (hidden) return;
-                    hidden = true;
-                        disable();
-                } else {
-                    if (!hidden) return;
+                if (hidden) {
                     hidden = false;
                     setup();
                 }
@@ -92,16 +88,15 @@ namespace Loading_screen_pictures {
             pic.material.mainTexture = texture;
             if (pic.material.mainTexture.height > pic.material.mainTexture.width) {
                 cube.transform.localScale = new Vector3(0.099f, 1, 0.175f);
-                GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(10.80f, 19.20f, 1);
+                mainFrame.transform.localScale = new Vector3(10.80f, 19.20f, 1);
             } else {
                 cube.transform.localScale = new Vector3(0.175f, 1, 0.099f);
-                GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(19.20f, 10.80f, 1);
+                mainFrame.transform.localScale = new Vector3(19.20f, 10.80f, 1);
             }
         }
 
         private void disable() {
             MelonLogger.Msg("Disabled");
-            GameObject mainFrame = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame");
             if (mainFrame) mainFrame.transform.localScale = originalSize;
             if (screenRender) screenRender.enabled = true;
             if (cube) GameObject.Destroy(cube);
@@ -110,7 +105,8 @@ namespace Loading_screen_pictures {
 
         private void setup() {
             if (!enabled || lastTexture != null) return;
-            originalSize = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale;
+            mainFrame = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame");
+            originalSize = mainFrame.transform.localScale;
 
             GameObject screen = GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainScreen");
             //check if screenshots folder is empty
@@ -142,10 +138,10 @@ namespace Loading_screen_pictures {
             //resize frame
             if (pic.material.mainTexture.height > pic.material.mainTexture.width) {
                 cube.transform.localScale = new Vector3(0.099f, 1, 0.175f);
-                GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(10.80f, 19.20f, 1);
+                mainFrame.transform.localScale = new Vector3(10.80f, 19.20f, 1);
             } else {
                 cube.transform.localScale = new Vector3(0.175f, 1, 0.099f);
-                GameObject.Find("/UserInterface/MenuContent/Popups/LoadingPopup/3DElements/LoadingInfoPanel/InfoPanel_Template_ANIM/SCREEN/mainFrame").transform.localScale = new Vector3(19.20f, 10.80f, 1);
+                mainFrame.transform.localScale = new Vector3(19.20f, 10.80f, 1);
             }
 
             //hide icon and title
@@ -162,29 +158,6 @@ namespace Loading_screen_pictures {
             int randPic = new Il2CppSystem.Random().Next(0, pics.Length);
             return pics[randPic].ToString();
         }
-
-        //thanks to Psychloor for this
-        public delegate bool StreamerModeDelegate();
-
-        private static StreamerModeDelegate ourStreamerModeDelegate;
-
-        public static StreamerModeDelegate GetStreamerMode {
-            get {
-                if (ourStreamerModeDelegate != null) return ourStreamerModeDelegate;
-
-                foreach (PropertyInfo property in typeof(VRCInputManager).GetProperties(BindingFlags.Public | BindingFlags.Static)) {
-                    if (property.PropertyType != typeof(bool)) continue;
-                    if (XrefScanner.XrefScan(property.GetSetMethod()).Any(
-                        xref => xref.Type == XrefType.Global && xref.ReadAsObject()?.ToString().Equals("VRC_STREAMER_MODE_ENABLED") == true)) {
-                        ourStreamerModeDelegate = (StreamerModeDelegate)System.Delegate.CreateDelegate(typeof(StreamerModeDelegate), property.GetGetMethod());
-                        return ourStreamerModeDelegate;
-                    }
-                }
-
-                return null;
-            }
-        }
-
 
     }
 }
