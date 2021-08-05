@@ -4,11 +4,9 @@ using System.IO;
 using UnityEngine;
 using Loading_screen_pictures;
 using System.Linq;
-using System.Reflection;
-using UnhollowerRuntimeLib.XrefScans;
 using System.Collections;
 
-[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.2.8", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.3.0", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace Loading_screen_pictures {
