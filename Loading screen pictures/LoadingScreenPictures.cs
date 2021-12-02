@@ -6,7 +6,7 @@ using Loading_screen_pictures;
 using System.Linq;
 using System.Collections;
 
-[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.3.1", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
+[assembly: MelonInfo(typeof(LoadingScreenPictures), "Loading Screen Pictures", "1.3.2", "MarkViews", "https://github.com/markviews/LoadingScreenPictures")]
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace Loading_screen_pictures {
@@ -124,7 +124,7 @@ namespace Loading_screen_pictures {
             cube.transform.rotation = screen.transform.rotation;
             cube.transform.localPosition = new Vector3(0, 0, -0.19f);
             cube.GetComponent<Collider>().enabled = false;
-            cube.layer = LayerMask.NameToLayer("UiMenu");
+            cube.layer = LayerMask.NameToLayer("InternalUI");
             Texture2D texture = new Texture2D(2, 2);
             ImageConversion.LoadImage(texture, File.ReadAllBytes(imageLink));
             pic = cube.GetComponent<Renderer>();
