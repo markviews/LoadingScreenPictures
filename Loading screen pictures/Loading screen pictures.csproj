@@ -7,7 +7,7 @@
     <ProjectGuid>{D4CF15C8-47C6-452B-9082-1DAB52F33964}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Loading_screen_pictures</RootNamespace>
-    <AssemblyName>Loading screen pictures</AssemblyName>
+    <AssemblyName>LoadingScreenPictures</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
